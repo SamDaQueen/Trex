@@ -12,8 +12,6 @@ var score=0;
 
 var gameOver, restart;
 
-var scaling;
-
 localStorage["HighestScore"] = 0;
 
 function preload(){
@@ -37,15 +35,16 @@ function preload(){
 
 function setup() {
 
-  scaling = windowHeight/windowWidth; 
-
   createCanvas(windowWidth, windowHeight);
   
   trex = createSprite(50,windowHeight-70,20,50);
   
   trex.addAnimation("running", trex_running);
   trex.addAnimation("collided", trex_collided);
-  trex.scale = scaling
+  trex.scale = 0.5;
+
+  trex.debug = true;
+  trex.setCollider("circle",0,0,40);
   
   ground = createSprite(windowWidth/2,windowHeight-20,windowWidth,20);
   ground.addImage("ground",groundImage);
@@ -58,8 +57,8 @@ function setup() {
   restart = createSprite(windowWidth/2,windowHeight/2-30);
   restart.addImage(restartImg);
   
-  gameOver.scale = scaling;
-  restart.scale = scaling;
+  gameOver.scale = 0.5;
+  restart.scale = 0.5;
 
   gameOver.visible = false;
   restart.visible = false;
@@ -75,16 +74,16 @@ function setup() {
 }
 
 function draw() {
-  //trex.debug = true;
+  
   background(255);
-  textSize(24);
-  text("Score: "+ score, windowWidth-0.1*windowWidth,0.1*windowHeight);
+  textSize(16);
+  text("Score: "+ score, windowWidth-0.2*windowWidth,0.2*windowHeight);
   
   if (gameState===PLAY){
     score = score + Math.round(getFrameRate()/60);
     ground.velocityX = -(6 + 3*score/100);
   
-    if(touches.lenght>0 || keyDown("space") && trex.y >= windowHeight-30-trex.height) {
+    if(touches.length>0 || keyDown("space") && trex.y >= windowHeight-30-trex.height) {
       trex.velocityY = -12;
       touches = [];
     }
@@ -140,7 +139,7 @@ function spawnClouds() {
     var cloud = createSprite(windowWidth,120,40,10);
     cloud.y = Math.round(random(0.1*windowHeight,windowHeight-100));
     cloud.addImage(cloudImage);
-    cloud.scale = scaling;
+    cloud.scale = 0.7;
     cloud.velocityX = -3;
     
      //assign lifetime to the variable
@@ -181,7 +180,7 @@ function spawnObstacles() {
     }
     
     //assign scale and lifetime to the obstacle           
-    obstacle.scale = scaling;
+    obstacle.scale = 0.5;
     obstacle.lifetime = -(windowWidth/obstacle.velocityX);
 
     //adjust the depth
