@@ -96,6 +96,11 @@ function draw() {
     }
   }
   else if (gameState === END) {
+    obstaclesGroup.depth = gameOver.depth;
+    cloudsGroup.depth = gameOver.depth;
+    gameOver.depth++;
+    restart.depth++;
+
     gameOver.visible = true;
     restart.visible = true;
     
@@ -170,6 +175,11 @@ function spawnObstacles() {
     //assign scale and lifetime to the obstacle           
     obstacle.scale = 0.5;
     obstacle.lifetime = 300;
+
+    //adjust the depth
+    obstacle.depth = trex.depth;
+    trex.depth = trex.depth + 1;
+
     //add each obstacle to the group
     obstaclesGroup.add(obstacle);
   }
